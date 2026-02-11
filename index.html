@@ -18,16 +18,9 @@
 
 <body>
 	
-    
-
-<button onclick="window.location.reload()" type="button" class="btn btn-lg btn-info" style="
-    float: right;
-    margin-top: 3px;
-">Actualizar</button>
-
-	
 <div class="container" id="makepdf">
    
+	<button onclick="window.location.reload()" type="button" class="btn btn-lg btn-info">Actualizar</button>
 	
 <h2>
     <img src="logo.jpeg" alt="Logo">
@@ -78,7 +71,7 @@
         </tr>
         <tr>
             <td><label for="horario">Horario:</label></td>
-            <td><input type="text" name="horario" id="horario"  class="timepicker"></td>
+            <td><input type="time" name="horario" id="horario"></td>
         </tr>
         <tr>
             <td><label for="horario">Periodo:</label>
@@ -286,16 +279,6 @@ $(document).ready(function(){
   });
        
 
-jQuery(document).ready(function(){
-    jQuery('.timepicker').timepicker({
-      twelveHour: false,
-      defaultTime: 'now',
-      autoClose: true,
-      cancel: 'Cancelar'
-    });
-  });
-
-	
 // Funcion mostrar LPM al calcular
 $('#calcularRuido').on('click', function(){
     $('#lmplbl').removeClass('hide');
