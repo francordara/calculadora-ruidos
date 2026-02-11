@@ -16,7 +16,7 @@ document.getElementById('fecha').value = today;
 let es_domingo;
 let es_diurno;
 let es_feriado;
-let asae;
+let zona;
 let asa;
 let periodo;
 let ambiente;
@@ -37,28 +37,28 @@ function mismoDia(a, b) {
          a.getDate() === b.getDate();
 }
 
-// *** Feriados 2025 (CABA/AR) ***
+// *** Feriados 2026 (CABA/AR) ***
 const feriados = [
-  new Date(2025,0,1),
-  new Date(2025,2,3),
-  new Date(2025,2,4),
-  new Date(2025,2,24),
-  new Date(2025,3,2),
-  new Date(2025,3,17),
-  new Date(2025,3,18),
-  new Date(2025,4,1),
-  new Date(2025,4,2),   
-  new Date(2025,4,25),
-  new Date(2025,5,16),  
-  new Date(2025,5,20),
-  new Date(2025,6,9),
-  new Date(2025,7,15),  
-  new Date(2025,9,12),  
-  new Date(2025,10,21), 
-  new Date(2025,10,24),
-  new Date(2025,11,8),
-  new Date(2025,11,25)
+  new Date(2026, 0, 1),   // Año Nuevo – 1 de enero
+  new Date(2026, 1, 16),  // Carnaval – 16 de febrero
+  new Date(2026, 1, 17),  // Carnaval – 17 de febrero
+  new Date(2026, 2, 23),  // No laborable con fines turísticos – 23 de marzo
+  new Date(2026, 2, 24),  // Día Nacional de la Memoria por la Verdad y la Justicia – 24 de marzo
+  new Date(2026, 3, 2),   // Día del Veterano y de los Caídos en Malvinas (y Jueves Santo) – 2 de abril
+  new Date(2026, 3, 3),   // Viernes Santo – 3 de abril
+  new Date(2026, 4, 1),   // Día del Trabajo – 1 de mayo
+  new Date(2026, 4, 25),  // Día de la Revolución de Mayo – 25 de mayo
+  new Date(2026, 5, 15),  // Paso a la Inmortalidad de Güemes (trasladable) – 15 de junio
+  new Date(2026, 5, 19),  // Día de la Bandera (sábado) – 20 de junio (depende si querés el día observado o la fecha real)
+  new Date(2026, 6, 9),   // Día de la Independencia – 9 de julio
+  new Date(2026, 7, 17),  // Paso a la Inmortalidad de San Martín (trasladable) – 17 de agosto
+  new Date(2026, 9, 12),  // Día del Respeto a la Diversidad Cultural – 12 de octubre
+  new Date(2026, 10, 23), // Día de la Soberanía Nacional – 23 de noviembre
+  new Date(2026, 11, 7),  // No laborable con fines turísticos – 7 de diciembre
+  new Date(2026, 11, 8),  // Día de la Inmaculada Concepción – 8 de diciembre
+  new Date(2026, 11, 25)  // Navidad – 25 de diciembre
 ];
+
 
 // ========================
 // Paso 1
@@ -75,11 +75,11 @@ function validarPaso1() {
   hora = parseInt(document.getElementById('horario').value.slice(0, 2), 10);
   es_diurno = hora >= 7 && hora < 22;
 
-  asae = document.getElementById("asae").value;
+  zona = document.getElementById("zona").value;
   ambiente = document.getElementById("ambiente").value;
 
-  if (isNaN(fecha.getTime()) || isNaN(hora) || asae == 0 || ambiente == 0) {
-    alert("El Campo Fecha, Hora, ASAE y Ambiente son obligatorios");
+  if (isNaN(fecha.getTime()) || isNaN(hora) || zona == 0 || ambiente == 0) {
+    alert("El Campo Fecha, Hora, Zona y Ambiente son obligatorios");
     return;
   }
 
@@ -88,7 +88,7 @@ function validarPaso1() {
 
   document.getElementById('fecha').disabled = true;
   document.getElementById('horario').disabled = true;
-  document.getElementById('asae').disabled = true;
+  document.getElementById('zona').disabled = true;
   document.getElementById('ambiente').disabled = true;
 
   // Periodo
@@ -111,7 +111,7 @@ function validarPaso1() {
     document.getElementById('asa').disabled = true;
     document.getElementById('recinto').disabled = true;
     document.getElementById('uso').disabled = true;
-    obtenerLimiteExt(asae, periodo);
+    obtenerLimiteExt(zona, periodo);
   } else {
     // Interior: mostrar selector ASA y continuar con Paso 2
     document.getElementById('asalbl').style.display = "";
@@ -124,8 +124,8 @@ function validarPaso1() {
 // ========================
 // Límites Exterior
 // ========================
-function obtenerLimiteExt(asae, periodo) {
-  // asae, periodo, limite
+function obtenerLimiteExt(zona, periodo) {
+  // zona, periodo, limite
   var limites = [
     [["1","DIU"],60],[["1","NDF"],50],
     [["2","DIU"],65],[["2","NDF"],50],
@@ -140,7 +140,7 @@ function obtenerLimiteExt(asae, periodo) {
     [["5d","DIU"],80],[["5d","NDF"],75]
   ];
 
-  const seleccionados = [asae, periodo];
+  const seleccionados = [zona, periodo];
   for (var i = 0; i < limites.length; i++) {
     let lim = limites[i][0];
     if (lim[0] === seleccionados[0] && lim[1] === seleccionados[1]) {
@@ -197,14 +197,14 @@ function validarPaso2Int() {
   document.getElementById('recinto').disabled = true;
   document.getElementById('uso').disabled = true;
 
-  obtenerLimiteInt(asae, periodo, asa, recinto, uso);
+  obtenerLimiteInt(zona, periodo, asa, recinto, uso);
 }
 
 // ========================
 // Límites Interior (VI/VII)
 // ========================
-function obtenerLimiteInt(asae, periodo, asa, recinto, uso) {
-  // asae, periodo, asa, recinto, uso, limite, +7 (S/N)
+function obtenerLimiteInt(zona, periodo, asa, recinto, uso) {
+  // zona, periodo, asa, recinto, uso, limite, +7 (S/N)
   var limites = [
     [["1","DIU","6","0","SAN"],50,"S"],
     [["1","DIU","6","0","ENS"],50,"S"],
@@ -321,8 +321,7 @@ function obtenerLimiteInt(asae, periodo, asa, recinto, uso) {
     [["5d","NDF","7","SER","0"],55,"N"],
     [["5d","NDF","7","SLVP","0"],75,"N"]
   ];
-
-  const seleccionados = [asae, periodo, asa, recinto, uso];
+  const seleccionados = [zona, periodo, asa, recinto, uso];
   for (var i = 0; i < limites.length; i++) {
     let lim = limites[i][0];
     if (lim[0] === seleccionados[0] && lim[1] === seleccionados[1] &&
@@ -410,8 +409,8 @@ function calcularRuido() {
   const habilitaLF7 = (!esExterior) && (
     // ASA VI: por uso
     (asa === "6" && ["SAN","ENS","CUL"].includes(uso)) ||
-    // ASA VII: solo si ASAE 1 o 2
-    (asa === "7" && (asae === "1" || asae === "2"))
+    // ASA VII: solo si zona 1 o 2
+    (asa === "7" && (zona === "1" || zona === "2"))
   );
 
   let lmpAplicable = lmp;
