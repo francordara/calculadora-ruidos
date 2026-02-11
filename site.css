@@ -1,0 +1,160 @@
+/* Mejorar impresion */
+
+@media print { 
+                button { 
+                display: none!important;
+                } 
+                body { 
+                zoom: 90% !important;
+                font-size: 15px;
+                margin: 25px !important;
+                } 
+
+                input {
+                    
+                    border: none!important;
+                    
+                }
+                
+                label {
+                    font-size: 20px !important;
+                    color: #505050;
+                }
+
+                input:disabled {
+                    color: #111;
+                    opacity: 1;
+                    background: white;
+                    border: none;
+                }
+
+                li.selected {
+                    display: none;
+                }
+
+                .select-wrapper ul
+                {
+                    display: none;
+                }
+
+                select:disabled
+                {
+                    display: none;
+                }
+                .select-wrapper .caret
+                {
+                    display: none;
+                }
+
+                select#decibelimetro{
+                    display: none !important;
+                }
+
+                .dropdown-content .select-dropdown{
+                    display: none !important;
+                }
+
+                select.datepicker-select.orig-select-month{
+                    display: none !important;
+                }
+
+                select.datepicker-select.orig-select-year{
+                    display: none !important;
+                }
+}
+
+
+
+body {margin: 10px;}
+
+
+.container {
+    width: 90% !important;
+    max-width: 90% !important;
+    /* margin: 20px; */
+}
+
+.h2, h2 {
+    font-size: 2em;
+    line-height: 1px;
+}
+
+label {
+    font-size: 1.8rem;
+    color: #505050;
+}
+
+.select-wrapper input.select-dropdown {
+    font-size: 25px;
+    font-family: OpenSans,Helvetica,Arial,sans-serif;
+    font-weight: 700;
+}
+
+
+input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), 
+input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), 
+input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), 
+input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default),
+ input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea
+ {
+    font-size: 25px;
+    font-family: OpenSans,Helvetica,Arial,sans-serif;
+    font-weight: 700;
+}
+
+
+
+.dropdown-content li > a, .dropdown-content li > span {
+    font-size: 16px;
+    color: #666;
+    display: block;
+    line-height: 22px;
+    padding: 14px 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #e1e1e1 !important;
+}
+
+
+.btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 1em;
+    line-height: 1.42857143;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    height: auto;
+}
+
+@font-face {
+    font-family: CHANEWEI;
+    src: url("CHANEWEI.eot");
+    src: url("CHANEWEI.eot?#iefix") format("embedded-opentype"), url("CHANEWEI.svg#Gotham") format("svg"), url("CHANEWEI.woff") format("woff"), url("CHANEWEI.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Glyphicons Halflings";
+    src: url("fonts/glyphicons-halflings-regular.eot");
+    src: url("fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("fonts/glyphicons-halflings-regular.woff") format("woff"), url("fonts/glyphicons-halflings-regular.ttf") format("truetype"),
+        url("fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
+}
+@font-face {
+    font-family: bastrap-icons;
+    src: url("fonts/bastrap-icons.eot");
+    src: url("fonts/bastrap-icons.eot?#iefix") format("embedded-opentype"), url("fonts/bastrap-icons.woff") format("woff"), url("fonts/bastrap-icons.ttf") format("truetype"), url("fonts/bastrap-icons.svg#bastrap-icons") format("svg");
+    font-weight: 400;
+    font-style: normal;
+}

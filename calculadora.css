@@ -1,0 +1,46 @@
+* {
+    font-family: Arial, sans-serif;
+    font-size: 25px;
+}
+
+#periodolbl,
+#resultadolmoff,
+#resultadolmon,
+#lmplbl,
+#lmplblm7v,
+#calculoruido {
+    font-weight: bold;
+    color: darkred;
+}
+
+#lmplbl,
+#lmplblm7v,
+#calculoruido {
+    font-size: 30px;
+}
+
+#m1on,
+#m2on,
+#m3on,
+#m1off,
+#m2off,
+#m3off {
+    width: 80px;
+    text-align: center;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+#domicilio {
+    width: 100%;
+}
+
+th,
+td {
+    padding: 4px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
