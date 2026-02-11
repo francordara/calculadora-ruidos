@@ -76,7 +76,21 @@ body {margin: 10px;}
 
 .h2, h2 {
     font-size: 2em;
-    line-height: 1px;
+    line-height: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+h2 img {
+    height: 52px;
+    width: auto;
+}
+
+h2 span {
+    margin: 0 !important;
+    position: static !important;
 }
 
 label {
