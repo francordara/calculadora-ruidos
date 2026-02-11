@@ -53,7 +53,7 @@
     position: absolute;
     font-family: CHANEWEI, Helvetica, Arial, sans-serif;
     line-height: 52px;
-    ">Calculadora de Ruidos</span>
+    ">Calculadora de Ruidos</span>      
       
  </h2>
    
@@ -67,16 +67,11 @@
         <tr>
             <td><label>Decibelimetro (nro serie): </label></td>
             <td>
-                
-                
-                         
-            <div class="input-field col s12">
-                <div class="select-wrapper"><input class="select-dropdown dropdown-trigger" type="text" readonly="true" data-target="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d0"><ul id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d0" class="dropdown-content select-dropdown" tabindex="0"><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d00" tabindex="0" class="selected"><span>Seleccione...</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d01" tabindex="0"><span>1314513</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d02" tabindex="0"><span>1314511</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d03" tabindex="0"><span>1314512</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d04" tabindex="0"><span>2702171</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d05" tabindex="0"><span>106451</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d06" tabindex="0"><span>43438</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d07" tabindex="0"><span>2456890</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d08" tabindex="0"><span>116448</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d09" tabindex="0"><span>2456892</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d010" tabindex="0"><span>2456897</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d011" tabindex="0"><span>2456898</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d012" tabindex="0"><span>106450</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d013" tabindex="0"><span>106447</span></li><li id="select-options-1028b086-fdeb-208d-a2dd-4ed0675ba0d014" tabindex="0"><span>1314514</span></li></ul><svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg><select id="decibelimetro" tabindex="-1">
+                <select id="decibelimetro">
                     <option value="0">Seleccione...</option>
-		    <option value="1314513">1314513</option>
-		    <option value="1314511">1314511</option>
-		    <option value="1314512">1314512</option>
-			<hr>
+                    <option value="1314513">1314513</option>
+                    <option value="1314511">1314511</option>
+                    <option value="1314512">1314512</option>
                     <option value="2702171">2702171</option>
                     <option value="106451">106451</option>
                     <option value="43438">43438</option>
@@ -87,13 +82,9 @@
                     <option value="2456898">2456898</option>
                     <option value="106450">106450</option>
                     <option value="106447">106447</option>
-		    <option value="106447">1314514</option>
-                </select></div>
-            </div>
-            
-            
+                    <option value="1314514">1314514</option>
+                </select>
             </td>
-
         </tr>
         <tr>
             <td><label for="fecha">Fecha:</label></td>
@@ -130,11 +121,13 @@
         </tr>
         <tr>
             <td><label>Ambiente: </label></td>
-            <td><div class="select-wrapper"><input class="select-dropdown dropdown-trigger" type="text" readonly="true" data-target="select-options-52cdfed9-4fa4-ab1b-154f-ac05ae4554ad"><ul id="select-options-52cdfed9-4fa4-ab1b-154f-ac05ae4554ad" class="dropdown-content select-dropdown" tabindex="0"><li id="select-options-52cdfed9-4fa4-ab1b-154f-ac05ae4554ad0" tabindex="0" class="selected"><span>Seleccione...</span></li><li id="select-options-52cdfed9-4fa4-ab1b-154f-ac05ae4554ad1" tabindex="0"><span>Interior</span></li><li id="select-options-52cdfed9-4fa4-ab1b-154f-ac05ae4554ad2" tabindex="0"><span>Exterior</span></li></ul><svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg><select id="ambiente" tabindex="-1">
+            <td>
+                <select id="ambiente">
                     <option value="0">Seleccione...</option>
                     <option value="interior">Interior</option>
                     <option value="exterior">Exterior</option>
-                </select></div></td>
+                </select>
+            </td>
         </tr>
         <tr>
             <td></td>
@@ -154,19 +147,23 @@
         </tr>
         <tr style="display: none" id="asalbl">
             <td><label>ASA: </label></td>
-            <td><div class="select-wrapper"><input class="select-dropdown dropdown-trigger" type="text" readonly="true" data-target="select-options-923aafb3-2967-546f-6413-4182501656aa"><ul id="select-options-923aafb3-2967-546f-6413-4182501656aa" class="dropdown-content select-dropdown" tabindex="0"><li id="select-options-923aafb3-2967-546f-6413-4182501656aa0" tabindex="0" class="selected"><span>Seleccione</span></li><li id="select-options-923aafb3-2967-546f-6413-4182501656aa1" tabindex="0"><span>Tipo VI</span></li><li id="select-options-923aafb3-2967-546f-6413-4182501656aa2" tabindex="0"><span>Tipo VII</span></li></ul><svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg><select id="asa" onchange="validaASA()" tabindex="-1">
+            <td>
+                <select id="asa" onchange="validaASA()">
                     <option value="0">Seleccione</option>
                     <option value="6">Tipo VI</option>
                     <option value="7">Tipo VII</option>
-                </select></div></td>
+                </select>
+            </td>
         </tr>
         <tr style="display: none" id="recintolbl">
             <td><label>Recinto: </label></td>
-            <td><div class="select-wrapper"><input class="select-dropdown dropdown-trigger" type="text" readonly="true" data-target="select-options-57222633-195b-de66-b049-7c7fff807a0d"><ul id="select-options-57222633-195b-de66-b049-7c7fff807a0d" class="dropdown-content select-dropdown" tabindex="0"><li id="select-options-57222633-195b-de66-b049-7c7fff807a0d0" tabindex="0" class="selected"><span>Habitable</span></li><li id="select-options-57222633-195b-de66-b049-7c7fff807a0d1" tabindex="0"><span>Servicio</span></li><li id="select-options-57222633-195b-de66-b049-7c7fff807a0d2" tabindex="0"><span>Servicio Lindero Via Publica</span></li></ul><svg class="caret" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg><select id="recinto" tabindex="-1">
+            <td>
+                <select id="recinto">
                     <option value="HAB">Habitable</option>
                     <option value="SER">Servicio</option>
                     <option value="SLVP">Servicio Lindero Via Publica</option>
-                </select></div></td>
+                </select>
+            </td>
         </tr>
         <tr style="display: none" id="usolbl">
             <td><label>Uso: </label></td>
