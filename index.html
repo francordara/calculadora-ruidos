@@ -12,6 +12,14 @@
     <link href="bastrap.css" rel="stylesheet">
     <link href="site.css" rel="stylesheet">
     <link href="calculadora.css" rel="stylesheet">
+    <style>
+        select.browser-default {
+            display: block !important;
+        }
+        .select-wrapper {
+            display: none !important;
+        }
+    </style>
 
 </head>
 
@@ -331,6 +339,13 @@ $('#calcularRuido').on('click', function(){
 <script>
 
 M.AutoInit();
+// Destruir selectores Materialize para evitar duplicados
+document.querySelectorAll('select.browser-default').forEach(function(select) {
+    var instance = M.Select.getInstance(select);
+    if (instance) {
+        instance.destroy();
+    }
+});
 
 </script>
 	
