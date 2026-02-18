@@ -93,7 +93,7 @@ function validarPaso1() {
 
   // Periodo
   periodo = es_diurno ? 'DIU' : 'NOC';
-  if (periodo == 'DIU' && (es_domingo || es_feriado)) { periodo = 'FER'; }
+  if (es_domingo || es_feriado) { periodo = 'FER'; }
 
   // Etiqueta de periodo
   const resultado = document.getElementById('periodolbl');
