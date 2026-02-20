@@ -67,7 +67,7 @@
         </tr>
         <tr>
             <td><label for="fecha">Fecha:</label></td>
-            <td><input type="text" name="fecha" id="fecha"  class="datepicker"></td>
+            <td><input type="date" name="fecha" id="fecha"></td>
         </tr>
         <tr>
             <td><label for="horario">Horario:</label></td>
@@ -266,15 +266,8 @@
 
 
 $(document).ready(function(){
-    $('.datepicker').datepicker(
-        {
-            format: 'yyyy-mm-dd',
-            defaultDate: 'now',
-            autoClose: true
-        }
-
-    );
-  });
+        // Datepicker eliminado: usamos input type="date" nativo
+    });
        
 
 // Funcion mostrar LPM al calcular
