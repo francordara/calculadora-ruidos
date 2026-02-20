@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculadora Ruidos</title>
+    <!-- Evitar zoom y forzar select nativo en móviles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
     <script type="text/javascript" src="html2pdf.bundle.js"></script>
 
@@ -34,17 +36,12 @@
         </tr>
         <tr>
             <td><label>Decibelimetro (nro serie): </label></td>
-            <td>
-                
-                
-                         
-            <div class="input-field col s12">
+            <td>                        
                 <select id="decibelimetro">
                     <option value="0">Seleccione...</option>
-		    <option value="1314513">1314513</option>
-		    <option value="1314511">1314511</option>
-		    <option value="1314512">1314512</option>
-			<hr>
+                    <option value="1314513">1314513</option>
+                    <option value="1314511">1314511</option>
+                    <option value="1314512">1314512</option>
                     <option value="2702171">2702171</option>
                     <option value="106451">106451</option>
                     <option value="43438">43438</option>
@@ -55,10 +52,8 @@
                     <option value="2456898">2456898</option>
                     <option value="106450">106450</option>
                     <option value="106447">106447</option>
-		    <option value="106447">1314514</option>
+                    <option value="1314514">1314514</option>
                 </select>
-            </div>
-            
             
             </td>
 
@@ -81,7 +76,8 @@
         </tr>
         <tr>
             <td><label>Zona: </label></td>
-            <td><select id="zona">
+            <td>
+                <select id="zona">
                     <option value="0">Seleccione...</option>
                     <option value="1">I (CbRb)</option>
                     <option value="2">II (APP/1, Rm1 / 4, Rma2, Rma4, Rma5, Rma1, CR1)</option>
@@ -92,7 +88,8 @@
                     <option value="7">VII (ID, IE)</option>
                     <option value="8">VIII (IP)</option>
                     <option value="9">IX (Zonas de AC, Cercano a arterias principales)</option>
-                </select></td>
+                </select>
+            </td>
         </tr>
         <tr>
             <td><label>Ambiente: </label></td>
