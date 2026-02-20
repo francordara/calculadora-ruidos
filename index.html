@@ -260,21 +260,22 @@
 
 
 <script>
+
+$(document).ready(function(){
+        // Datepicker eliminado: usamos input type="date" nativo
+    });
+       
 // Funcion mostrar LPM al calcular
 $('#calcularRuido').on('click', function(){
     $('#lmplbl').removeClass('hide');
 });
 
-// Inicializar Materialize select solo en escritorio
-if (window.matchMedia('(min-width: 601px)').matches) {
-    document.addEventListener('DOMContentLoaded', function() {
-        var elems = document.querySelectorAll('select');
-        if (window.M && M.FormSelect) {
-            M.FormSelect.init(elems);
-        }
-    });
-}
+	
+
+
 </script>
+
+<script>M.AutoInit();</script>           
 	
 	
 <script>
