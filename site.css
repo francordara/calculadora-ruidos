@@ -87,8 +87,19 @@
     font-size: 16px;
 }
 
+.dropdown-content {
+    position: absolute !important;
+    z-index: 99999 !important;
+}
+
+.dropdown-content li {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+}
 
 body {
+    touch-action: manipulation;
     margin: 0;
     padding: 20px;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -105,6 +116,7 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     padding: 30px;
     position: relative;
+    overflow: visible !important;
 }
 
 .container .btn-lg.btn-info {
