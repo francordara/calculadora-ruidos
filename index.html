@@ -316,7 +316,7 @@ $('#calcularRuido').on('click', function(){
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a2', orientation: 'portrait' }
+                jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' }
             }).from(nodoParaPdf).save();
             
         });
