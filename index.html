@@ -282,10 +282,47 @@ $('#calcularRuido').on('click', function(){
 
         var button = document.getElementById("botonPDF");
         var makepdf = document.getElementById("makepdf");
+
+        function prepararNodoParaPdf(origen) {
+            var clon = origen.cloneNode(true);
+            var controles = clon.querySelectorAll('input, select, textarea');
+
+            controles.forEach(function(control) {
+                var texto = "";
+
+                if (control.tagName === "SELECT") {
+                    texto = control.options[control.selectedIndex] ? control.options[control.selectedIndex].text : "";
+                } else {
+                    texto = control.value || "";
+                }
+
+                var reemplazo = document.createElement("span");
+                reemplazo.textContent = texto;
+                reemplazo.style.display = "inline-block";
+                reemplazo.style.width = "100%";
+                reemplazo.style.minHeight = "1.2em";
+                reemplazo.style.padding = "12px";
+                reemplazo.style.border = "2px solid #ecf0f1";
+                reemplazo.style.borderRadius = "6px";
+                reemplazo.style.backgroundColor = "#f8f9fa";
+                reemplazo.style.boxSizing = "border-box";
+                reemplazo.style.color = "#2c3e50";
+
+                control.parentNode.replaceChild(reemplazo, control);
+            });
+
+            return clon;
+        }
   
         button.addEventListener("click", function () {
-           
-            html2pdf().from(makepdf).save();
+            var nodoParaPdf = prepararNodoParaPdf(makepdf);
+
+            html2pdf().set({
+                margin: 8,
+                filename: 'resultado-ruido.pdf',
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(nodoParaPdf).save();
             
         });
 
