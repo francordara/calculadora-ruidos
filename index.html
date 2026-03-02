@@ -258,6 +258,22 @@
 
 $(document).ready(function(){
         // Datepicker eliminado: usamos input type="date" nativo
+
+        var esDispositivoTactil = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+        if (esDispositivoTactil) {
+            // En móviles usamos select nativo para evitar errores de selección táctil
+            $('select').each(function () {
+                var instancia = M.FormSelect.getInstance(this);
+                if (instancia) {
+                    instancia.destroy();
+                }
+                $(this).addClass('browser-default');
+            });
+        } else {
+            // En desktop mantenemos el select mejorado de Materialize
+            $('select').formSelect();
+        }
     });
        
 // Funcion mostrar LPM al calcular
@@ -270,7 +286,6 @@ $('#calcularRuido').on('click', function(){
 
 </script>
 
-<script>M.AutoInit();</script>           
 	
 	
 <script>
