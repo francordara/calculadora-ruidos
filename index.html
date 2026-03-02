@@ -258,22 +258,6 @@
 
 $(document).ready(function(){
         // Datepicker eliminado: usamos input type="date" nativo
-
-        var esDispositivoTactil = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-
-        if (esDispositivoTactil) {
-            // En móviles usamos select nativo para evitar errores de selección táctil
-            $('select').each(function () {
-                var instancia = M.FormSelect.getInstance(this);
-                if (instancia) {
-                    instancia.destroy();
-                }
-                $(this).addClass('browser-default');
-            });
-        } else {
-            // En desktop mantenemos el select mejorado de Materialize
-            $('select').formSelect();
-        }
     });
        
 // Funcion mostrar LPM al calcular
@@ -286,6 +270,7 @@ $('#calcularRuido').on('click', function(){
 
 </script>
 
+<script>M.AutoInit();</script>           
 	
 	
 <script>
@@ -296,6 +281,12 @@ $('#calcularRuido').on('click', function(){
         function prepararNodoParaPdf(origen) {
             var clon = origen.cloneNode(true);
             var controles = clon.querySelectorAll('input, select, textarea');
+            var filas = clon.querySelectorAll('tr');
+
+            filas.forEach(function (fila) {
+                fila.style.pageBreakInside = 'avoid';
+                fila.style.breakInside = 'avoid';
+            });
 
             controles.forEach(function(control) {
                 var texto = "";
@@ -326,60 +317,19 @@ $('#calcularRuido').on('click', function(){
   
         button.addEventListener("click", function () {
             var nodoParaPdf = prepararNodoParaPdf(makepdf);
-            var contenedorTemporal = document.createElement("div");
 
-            contenedorTemporal.style.position = "fixed";
-            contenedorTemporal.style.left = "-10000px";
-            contenedorTemporal.style.top = "0";
-            contenedorTemporal.style.background = "white";
-            contenedorTemporal.style.zIndex = "-1";
-
-            contenedorTemporal.appendChild(nodoParaPdf);
-            document.body.appendChild(contenedorTemporal);
-
-            html2canvas(nodoParaPdf, {
-                scale: 2,
-                useCORS: true,
-                backgroundColor: "#ffffff"
-            }).then(function (canvas) {
-                var jsPDFConstructor = window.jspdf && window.jspdf.jsPDF;
-
-                if (!jsPDFConstructor) {
-                    throw new Error("jsPDF no disponible");
+            html2pdf().set({
+                margin: 8,
+                filename: 'resultado-ruido.pdf',
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: {
+                    mode: ['css', 'legacy'],
+                    avoid: ['tr', 'h2', 'img'],
+                    before: ['#monlblt']
                 }
-
-                var pdf = new jsPDFConstructor({
-                    orientation: "portrait",
-                    unit: "mm",
-                    format: "a4"
-                });
-
-                var margen = 8;
-                var paginaAncho = pdf.internal.pageSize.getWidth();
-                var paginaAlto = pdf.internal.pageSize.getHeight();
-                var anchoDisponible = paginaAncho - margen * 2;
-                var altoDisponible = paginaAlto - margen * 2;
-
-                var imgAncho = canvas.width;
-                var imgAlto = canvas.height;
-                var escala = Math.min(anchoDisponible / imgAncho, altoDisponible / imgAlto);
-
-                var anchoFinal = imgAncho * escala;
-                var altoFinal = imgAlto * escala;
-                var posicionX = (paginaAncho - anchoFinal) / 2;
-                var posicionY = margen;
-
-                var imagen = canvas.toDataURL("image/jpeg", 0.95);
-                pdf.addImage(imagen, "JPEG", posicionX, posicionY, anchoFinal, altoFinal, undefined, "FAST");
-                pdf.save("resultado-ruido.pdf");
-            }).catch(function (error) {
-                console.error("Error generando PDF:", error);
-                alert("No se pudo generar el PDF. Intente nuevamente.");
-            }).finally(function () {
-                if (contenedorTemporal.parentNode) {
-                    contenedorTemporal.parentNode.removeChild(contenedorTemporal);
-                }
-            });
+            }).from(nodoParaPdf).save();
+            
         });
 
 </script>
