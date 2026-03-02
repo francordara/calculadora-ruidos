@@ -198,18 +198,6 @@ button.btn-lg {
     margin: 10px;
 }
 
-#lbllmlf,
-#lblle,
-#calculoruido {
-    display: none;
-}
-
-table tr:has(#lbllmlf),
-table tr:has(#lblle),
-table tr:has(#calculoruido) {
-    display: none !important;
-}
-
 @font-face {
     font-family: CHANEWEI;
     src: url("CHANEWEI.eot");
