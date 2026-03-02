@@ -127,42 +127,42 @@ function validarPaso1() {
 function obtenerLimiteExt(zona, periodo) {
   // zona, periodo, limite
   var limites = [  // Limites para exterior si se distingue entre interior/exterior (falta aclarar valores)
-    [["1","DIU"],],
-    [["1","FER"],],
-    [["1","NOC"],],
+    [["1","DIU"],0],
+    [["1","FER"],0],
+    [["1","NOC"],0],
     
-    [["2","DIU"],],
-    [["2","FER"],],
-    [["2","NOC"],],
+    [["2","DIU"],0],
+    [["2","FER"],0],
+    [["2","NOC"],0],
 
-    [["3","DIU"],],
-    [["3","FER"],],
-    [["3","NOC"],],
+    [["3","DIU"],0],
+    [["3","FER"],0],
+    [["3","NOC"],0],
 
-    [["4","DIU"],],
-    [["4","FER"],],
-    [["4","NOC"],],
+    [["4","DIU"],0],
+    [["4","FER"],0],
+    [["4","NOC"],0],
     
-    [["5","DIU"],],
-    [["5","FER"],],
-    [["5","NOC"],],
+    [["5","DIU"],0],
+    [["5","FER"],0],
+    [["5","NOC"],0],
 
-    [["6","DIU"],],
-    [["6","FER"],],
-    [["6","NOC"],],
+    [["6","DIU"],0],
+    [["6","FER"],0],
+    [["6","NOC"],0],
     
-    [["7","DIU"],],
-    [["7","FER"],],
-    [["7","NOC"],],
+    [["7","DIU"],0],
+    [["7","FER"],0],
+    [["7","NOC"],0],
 
-    [["8","DIU"],],
-    [["8","FER"],],
-    [["8","NOC"],],
+    [["8","DIU"],0],
+    [["8","FER"],0],
+    [["8","NOC"],0],
 
-    [["9","DIU"],],
-    [["9","FER"],],
-    [["9","NOC"],] 
-  ];
+    [["9","DIU"],0],
+    [["9","FER"],0],
+    [["9","NOC"],0]];
+
   if (!hayPaso2 && !hayExterior) {
     limites = [   // Límites si no hay paso 2 (ASA/USO/RECINTO) y no se distingue entre interior/exterior
     [["1","DIU"],45],
@@ -199,8 +199,7 @@ function obtenerLimiteExt(zona, periodo) {
 
     [["9","DIU"],55],
     [["9","FER"],50],
-    [["9","NOC"],45] 
-  ];
+    [["9","NOC"],45]];
   }
   const seleccionados = [zona, periodo];
   for (var i = 0; i < limites.length; i++) {
