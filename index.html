@@ -258,6 +258,22 @@
 
 $(document).ready(function(){
         // Datepicker eliminado: usamos input type="date" nativo
+
+        var esDispositivoTactil = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+        if (esDispositivoTactil) {
+            // En móviles usamos select nativo para evitar errores de selección táctil
+            $('select').each(function () {
+                var instancia = M.FormSelect.getInstance(this);
+                if (instancia) {
+                    instancia.destroy();
+                }
+                $(this).addClass('browser-default');
+            });
+        } else {
+            // En desktop mantenemos el select mejorado de Materialize
+            $('select').formSelect();
+        }
     });
        
 // Funcion mostrar LPM al calcular
@@ -270,7 +286,6 @@ $('#calcularRuido').on('click', function(){
 
 </script>
 
-<script>M.AutoInit();</script>           
 	
 	
 <script>
@@ -281,12 +296,6 @@ $('#calcularRuido').on('click', function(){
         function prepararNodoParaPdf(origen) {
             var clon = origen.cloneNode(true);
             var controles = clon.querySelectorAll('input, select, textarea');
-            var filas = clon.querySelectorAll('tr');
-
-            filas.forEach(function (fila) {
-                fila.style.pageBreakInside = 'avoid';
-                fila.style.breakInside = 'avoid';
-            });
 
             controles.forEach(function(control) {
                 var texto = "";
@@ -322,12 +331,7 @@ $('#calcularRuido').on('click', function(){
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: {
-                    mode: ['css', 'legacy'],
-                    avoid: ['tr', 'h2', 'img'],
-                    before: ['#monlblt']
-                }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).from(nodoParaPdf).save();
             
         });
