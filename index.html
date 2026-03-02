@@ -296,12 +296,6 @@ $('#calcularRuido').on('click', function(){
         function prepararNodoParaPdf(origen) {
             var clon = origen.cloneNode(true);
             var controles = clon.querySelectorAll('input, select, textarea');
-            var bloquesNoCorte = clon.querySelectorAll('h2, h2 img');
-
-            bloquesNoCorte.forEach(function (bloque) {
-                bloque.style.pageBreakInside = "avoid";
-                bloque.style.breakInside = "avoid";
-            });
 
             controles.forEach(function(control) {
                 var texto = "";
@@ -332,18 +326,60 @@ $('#calcularRuido').on('click', function(){
   
         button.addEventListener("click", function () {
             var nodoParaPdf = prepararNodoParaPdf(makepdf);
+            var contenedorTemporal = document.createElement("div");
 
-            html2pdf().set({
-                margin: 8,
-                filename: 'resultado-ruido.pdf',
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: {
-                    mode: ['css', 'legacy'],
-                    avoid: ['h2', 'h2 img']
+            contenedorTemporal.style.position = "fixed";
+            contenedorTemporal.style.left = "-10000px";
+            contenedorTemporal.style.top = "0";
+            contenedorTemporal.style.background = "white";
+            contenedorTemporal.style.zIndex = "-1";
+
+            contenedorTemporal.appendChild(nodoParaPdf);
+            document.body.appendChild(contenedorTemporal);
+
+            html2canvas(nodoParaPdf, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(function (canvas) {
+                var jsPDFConstructor = window.jspdf && window.jspdf.jsPDF;
+
+                if (!jsPDFConstructor) {
+                    throw new Error("jsPDF no disponible");
                 }
-            }).from(nodoParaPdf).save();
-            
+
+                var pdf = new jsPDFConstructor({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4"
+                });
+
+                var margen = 8;
+                var paginaAncho = pdf.internal.pageSize.getWidth();
+                var paginaAlto = pdf.internal.pageSize.getHeight();
+                var anchoDisponible = paginaAncho - margen * 2;
+                var altoDisponible = paginaAlto - margen * 2;
+
+                var imgAncho = canvas.width;
+                var imgAlto = canvas.height;
+                var escala = Math.min(anchoDisponible / imgAncho, altoDisponible / imgAlto);
+
+                var anchoFinal = imgAncho * escala;
+                var altoFinal = imgAlto * escala;
+                var posicionX = (paginaAncho - anchoFinal) / 2;
+                var posicionY = margen;
+
+                var imagen = canvas.toDataURL("image/jpeg", 0.95);
+                pdf.addImage(imagen, "JPEG", posicionX, posicionY, anchoFinal, altoFinal, undefined, "FAST");
+                pdf.save("resultado-ruido.pdf");
+            }).catch(function (error) {
+                console.error("Error generando PDF:", error);
+                alert("No se pudo generar el PDF. Intente nuevamente.");
+            }).finally(function () {
+                if (contenedorTemporal.parentNode) {
+                    contenedorTemporal.parentNode.removeChild(contenedorTemporal);
+                }
+            });
         });
 
 </script>
