@@ -25,6 +25,14 @@ let recinto;
 let lmp;
 let lmpb = 0;
 let msiete = "N";
+let k;
+let k_T;
+let k_I;
+let k_bf;
+let es_molesto;
+let es_tonal;
+let es_impulsivo;
+let es_bajafrecuencia;
 let fecha;
 let hora;
 let hayPaso2 = false; // Si se usa ASA/USO/RECINTO (paso 2)
@@ -61,6 +69,8 @@ const feriados = [
 ];
 
 
+
+
 // ========================
 // Paso 1
 // ========================
@@ -82,6 +92,23 @@ function validarPaso1() {
   if (isNaN(fecha.getTime()) || isNaN(hora) || zona == 0 || ambiente == 0) {
     alert("El Campo Fecha, Hora, Zona y Ambiente son obligatorios");
     return;
+  }
+ // Terminos de penalización K
+  k_T = es_tonal ? 5 : 0;
+  k_I = es_impulsivo ? 5 : 0;
+  if (es_bajafrecuencia) {
+    // ver correccion por contenido de alta frequencioa
+  } else {
+    k_bf = 0;
+  k = k_T + k_I + k_bf;
+  switch (k) {
+    case 0: k = 0; break;
+    case 5: k = 5; break;
+    case 7: k = 6; break;
+    case 10: k = 6; break;
+    case 12: k = 7; break;
+    case 15: es_molesto = true; break;
+    case 17: es_molesto = true; break;
   }
 
   // Feriados (comparación por Y-M-D)
