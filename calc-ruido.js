@@ -223,7 +223,7 @@ function obtenerLimiteExt(zona, periodo) {
 // UI mediciones
 // ========================
 function mostrarMed() {
-  const ids = ['monm1','monm2','monm3','monlblt','moffm1','moffm2','moffm3','mofflblt','btncalcr','btnImprimir'];
+  const ids = ['monm1','monlblt','moffm1','mofflblt','btncalcr','btnImprimir'];
   ids.forEach(id => document.getElementById(id).style.display = "");
 }
 
@@ -617,42 +617,28 @@ function calcularRuido() {
   document.getElementById("lblle").innerText = "";
 
   const m1on = parseFloat(document.getElementById("m1on").value);
-  const m2on = parseFloat(document.getElementById("m2on").value);
-  const m3on = parseFloat(document.getElementById("m3on").value);
 
   // Si antes quedó guardado un LMP mayor (por LF+7), preservarlo
   lmp = (lmpb && lmpb > lmp) ? lmpb : lmp;
 
   // Validaciones ON
-  if (isNaN(m1on) || m1on <= 0 || isNaN(m2on) || m2on <= 0 || isNaN(m3on) || m3on <= 0) {
-    document.getElementById("resultadolmon").innerText = "Por favor, ingrese valores mayores a 0 en las cajas de texto.";
+  if (isNaN(m1on) || m1on <= 0) {
+    document.getElementById("resultadolmon").innerText = "Por favor, ingrese valores mayores a 0 en la caja de texto.";
     return;
   }
-  var maximo = Math.max(m1on, m2on, m3on);
-  var minimo = Math.min(m1on, m2on, m3on);
-  if (maximo - minimo > 3) {
-    document.getElementById("resultadolmon").innerText = "La diferencia entre los extremos de la serie no debe ser mayor a 3db.";
-    return;
-  }
-  var lm = (m1on + m2on + m3on) / 3;
+    
+  var lm = m1on;
   document.getElementById("resultadolmon").innerText = "LM = " + lm.toFixed(1);
 
   // OFF
   const m1off = parseFloat(document.getElementById("m1off").value);
-  const m2off = parseFloat(document.getElementById("m2off").value);
-  const m3off = parseFloat(document.getElementById("m3off").value);
 
-  if (isNaN(m1off) || m1off <= 0 || isNaN(m2off) || m2off <= 0 || isNaN(m3off) || m3off <= 0) {
-    document.getElementById("resultadolmoff").innerText = "Por favor, ingrese valores mayores a 0 en las cajas de texto.";
+  if (isNaN(m1off) || m1off <= 0) {
+    document.getElementById("resultadolmoff").innerText = "Por favor, ingrese valores mayores a 0 en la caja de texto.";
     return;
   }
-  maximo = Math.max(m1off, m2off, m3off);
-  minimo = Math.min(m1off, m2off, m3off);
-  if (maximo - minimo > 3) {
-    document.getElementById("resultadolmoff").innerText = "La diferencia entre los extremos de la serie no debe ser mayor a 3db.";
-    return;
-  }
-  var lf = (m1off + m2off + m3off) / 3;
+
+  var lf = m1off;
   document.getElementById("resultadolmoff").innerText = "LF = " + lf.toFixed(1);
 
   // Diferencia LM - LF
