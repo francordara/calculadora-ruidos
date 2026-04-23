@@ -18,7 +18,7 @@
 
 <body>
 	
-<button onclick="window.location.reload()" type="button" class="btn btn-lg btn-info">Actualizar</button>
+<button onclick="window.location.replace(window.location.pathname + '?reset=' + Date.now())" type="button" class="btn btn-lg btn-info">Actualizar</button>
 
 <div id="makepdf">
 
@@ -100,7 +100,6 @@
                 </select></td>
         </tr>
         <tr>
-            <td></td>
             	
 		<td>
 		    <button data-html2canvas-ignore="true" id="validarPaso1" onclick="validarPaso1()" type="button" class="btn btn-lg btn-primary">Validar Paso 1</button>
@@ -164,35 +163,52 @@
             </td>
         </tr>
         <tr style="display: none" id="monm1">
-            <td><label>Med On - 1</label></td>
+            <td><label>Med On</label></td>
             <td><input type="number" name="m1on" id="m1on" step="0.01"></td>
-        </tr>
-        <tr style="display: none" id="monm2">
-            <td><label>Med On - 2</label></td>
-            <td><input type="number" name="m2on" id="m2on" step="0.01"></td>
-        </tr>
-        <tr style="display: none" id="monm3">
-            <td><label>Med On - 3</label></td>
-            <td><input type="number" name="m3on" id="m3on" step="0.01"></td>
         </tr>
         <tr style="display: none; background-color:#ccc ; font-weight: bold;" id="mofflblt">
             <td><label>FUENTE OFF</label></td>
             <td><label id="resultadolmoff"></label></td>
         </tr>
         <tr style="display: none" id="moffm1">
-            <td><label>Med Off - 1</label></td>
+            <td><label>Med Off</label></td>
             <td><input type="number" name="m1off" id="m1off" step="0.01"></td>
         </tr>
-        <tr style="display: none" id="moffm2">
-            <td><label>Med Off - 2</label></td>
-            <td><input type="number" name="m2off" id="m2off" step="0.01"></td>
+        
+        <tr style="background-color:#ccc ; font-weight: bold; display: none;" id="lblpenalizaciones">
+            <td colspan="2"><label>PENALIZACIONES (Norma IRAM 4062-2)</label></td>
         </tr>
-        <tr style="display: none" id="moffm3">
-            <td><label>Med Off - 3</label></td>
-            <td><input type="number" name="m3off" id="m3off" step="0.01"></td>
+        <tr style="display: none" id="row_kt">
+            <td><label>¿Carácter Tonal?</label><br><span style="font-size: 14px; color: #555;">(Ej: silbidos, zumbidos)</span></td>
+            <td>
+                <select id="k_tonal">
+                    <option value="0">No (Kt = 0)</option>
+                    <option value="5">Sí (Kt = 5)</option>
+                </select>
+            </td>
         </tr>
+        <tr style="display: none" id="row_ki">
+            <td><label>¿Carácter Impulsivo?</label><br><span style="font-size: 14px; color: #555;">(Ej: golpes, martillazos)</span></td>
+            <td>
+                <select id="k_impulsivo">
+                    <option value="0">No (Ki = 0)</option>
+                    <option value="5">Sí (Ki = 5)</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display: none" id="row_kbf">
+            <td><label>Baja Frecuencia</label><br><span style="font-size: 14px; color: #555;">(Dif. LCeq - LAeq)</span></td>
+            <td>
+                <select id="k_bajafrec">
+                    <option value="0">Menor a 10 dB (Kbf = 0)</option>
+                    <option value="5">Entre 10 y 15 dB (Kbf = 5)</option>
+                    <option value="7">Mayor a 15 dB (Kbf = 7)</option>
+                </select>
+            </td>
+        </tr>
+        
         <tr style="display: none" id="btncalcr">
-            
+        
            	
 		<td>
 		<button data-html2canvas-ignore="true" id="calcularRuido" onclick="calcularRuido()" type="button" class="btn btn-info btn-primary">Calcular Nivel Ruido</button>
@@ -331,7 +347,7 @@ $('#calcularRuido').on('click', function(){
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'c3', orientation: 'portrait' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).from(nodoParaPdf).save();
             
         });

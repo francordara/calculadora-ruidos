@@ -25,6 +25,14 @@ let recinto;
 let lmp;
 let lmpb = 0;
 let msiete = "N";
+let k;
+let k_T;
+let k_I;
+let k_bf;
+let es_molesto;
+let es_tonal;
+let es_impulsivo;
+let es_bajafrecuencia;
 let fecha;
 let hora;
 let hayPaso2 = false; // Si se usa ASA/USO/RECINTO (paso 2)
@@ -61,47 +69,76 @@ const feriados = [
 ];
 
 
+
+
 // ========================
 // Paso 1
 // ========================
 function validarPaso1() {
-  // Parseo LOCAL del input 'YYYY-MM-DD' (evita desfase a UTC)
+  // Parseo LOCAL del input 'YYYY-MM-DD'
   const fval = document.getElementById('fecha').value;
   const [y, m, d] = fval.split('-').map(Number);
-  fecha = new Date(y, m - 1, d); // local midnight
-
-  const diaSemana = fecha.getDay(); // 0 = Domingo
-  es_domingo = (diaSemana === 0);
-
-  hora = parseInt(document.getElementById('horario').value.slice(0, 2), 10);
-  es_diurno = hora >= 7 && hora < 22;
-
+  fecha = new Date(y, m - 1, d);
+  const timeValue = document.getElementById('horario').value;
+  hora = parseInt(timeValue.split(':')[0], 10);
   zona = document.getElementById("zona").value;
   ambiente = document.getElementById("ambiente").value;
 
   if (isNaN(fecha.getTime()) || isNaN(hora) || zona == 0 || ambiente == 0) {
-    alert("El Campo Fecha, Hora, Zona y Ambiente son obligatorios");
+    alert("Los campos Fecha, Horario, Zona y Ambiente son obligatorios.");
     return;
   }
 
-  // Feriados (comparación por Y-M-D)
-  es_feriado = feriados.some(dv => mismoDia(fecha, dv));
-
+  // Deshabilitar controles
   document.getElementById('fecha').disabled = true;
   document.getElementById('horario').disabled = true;
   document.getElementById('zona').disabled = true;
   document.getElementById('ambiente').disabled = true;
 
-  // Periodo
-  periodo = es_diurno ? 'DIU' : 'NOC';
-  if (es_domingo || es_feriado) { periodo = 'FER'; }
+  // Variables para categorizar el día
+  const diaSemana = fecha.getDay(); // 0 = Domingo, 1-5 = Lunes a Viernes, 6 = Sábado
+  es_feriado = feriados.some(dv => mismoDia(fecha, dv));
+ 
+  const es_domingo_o_feriado = (diaSemana === 0 || es_feriado);
+  const es_sabado = (diaSemana === 6 && !es_feriado);
+  const es_habil = (diaSemana >= 1 && diaSemana <= 5 && !es_feriado);
 
-  // Etiqueta de periodo
+  // ========================
+  // Lógica de Períodos (Norma IRAM 4062)
+  // ========================
+ 
+  // 1. Horario Nocturno (Todos los días de 22 h a 6 h)
+  if (hora >= 22 || hora < 6) {
+    periodo = 'NOC';
+  }
+  // 2. Domingos y Feriados (Lo que no es nocturno, es descanso de 6 h a 22 h)
+  else if (es_domingo_o_feriado) {
+    periodo = 'DES';
+  }
+  // 3. Sábados
+  else if (es_sabado) {
+    if (hora >= 8 && hora < 14) {
+      periodo = 'DIU';
+    } else {
+      // Aplica a la franja de 6 h a 8 h y de 14 h a 22 h
+      periodo = 'DES';
+    }
+  }
+  // 4. Días Hábiles (Lunes a Viernes)
+  else if (es_habil) {
+    if (hora >= 8 && hora < 20) {
+      periodo = 'DIU';
+    } else {
+      // Aplica a la franja de 6 h a 8 h y de 20 h a 22 h
+      periodo = 'DES';
+    }
+  }
+
+  // Etiqueta de periodo en la interfaz
   const resultado = document.getElementById('periodolbl');
-  resultado.textContent = es_feriado ? 'FERIADO'
-                        : es_domingo ? 'DOMINGO'
-                        : es_diurno  ? 'DIURNO'
-                                     : 'NOCTURNO';
+  if (periodo === 'DIU') resultado.textContent = 'DIURNO';
+  if (periodo === 'DES') resultado.textContent = 'DESCANSO';
+  if (periodo === 'NOC') resultado.textContent = 'NOCTURNO';
 
   // Mostrar/ocultar controles según ambiente y si se usa paso 2
   if (!hayPaso2 || (hayExterior && ambiente === "exterior")) {
@@ -128,77 +165,77 @@ function obtenerLimiteExt(zona, periodo) {
   // zona, periodo, limite
   var limites = [  // Limites para exterior si se distingue entre interior/exterior (falta aclarar valores)
     [["1","DIU"],0],
-    [["1","FER"],0],
+    [["1","DES"],0],
     [["1","NOC"],0],
     
     [["2","DIU"],0],
-    [["2","FER"],0],
+    [["2","DES"],0],
     [["2","NOC"],0],
 
     [["3","DIU"],0],
-    [["3","FER"],0],
+    [["3","DES"],0],
     [["3","NOC"],0],
 
     [["4","DIU"],0],
-    [["4","FER"],0],
+    [["4","DES"],0],
     [["4","NOC"],0],
     
     [["5","DIU"],0],
-    [["5","FER"],0],
+    [["5","DES"],0],
     [["5","NOC"],0],
 
     [["6","DIU"],0],
-    [["6","FER"],0],
+    [["6","DES"],0],
     [["6","NOC"],0],
     
     [["7","DIU"],0],
-    [["7","FER"],0],
+    [["7","DES"],0],
     [["7","NOC"],0],
 
     [["8","DIU"],0],
-    [["8","FER"],0],
+    [["8","DES"],0],
     [["8","NOC"],0],
 
     [["9","DIU"],0],
-    [["9","FER"],0],
+    [["9","DES"],0],
     [["9","NOC"],0]];
 
   if (!hayPaso2 && !hayExterior) {
     limites = [   // Límites si no hay paso 2 (ASA/USO/RECINTO) y no se distingue entre interior/exterior
     [["1","DIU"],45],
-    [["1","FER"],40],
+    [["1","DES"],40],
     [["1","NOC"],35],
     
     [["2","DIU"],45],
-    [["2","FER"],40],
+    [["2","DES"],40],
     [["2","NOC"],35],
 
     [["3","DIU"],50],
-    [["3","FER"],45],
+    [["3","DES"],45],
     [["3","NOC"],40],
 
     [["4","DIU"],55],
-    [["4","FER"],50],
+    [["4","DES"],50],
     [["4","NOC"],45],
     
     [["5","DIU"],60],
-    [["5","FER"],55],
+    [["5","DES"],55],
     [["5","NOC"],50],
 
     [["6","DIU"],65],
-    [["6","FER"],60],
+    [["6","DES"],60],
     [["6","NOC"],55],
-    
+  
     [["7","DIU"],70],
-    [["7","FER"],65],
+    [["7","DES"],65],
     [["7","NOC"],60],
-
+    
     [["8","DIU"],60],
-    [["8","FER"],55],
+    [["8","DES"],55],
     [["8","NOC"],50],
-
+    
     [["9","DIU"],55],
-    [["9","FER"],50],
+    [["9","DES"],50],
     [["9","NOC"],45]];
   }
   const seleccionados = [zona, periodo];
@@ -223,7 +260,7 @@ function obtenerLimiteExt(zona, periodo) {
 // UI mediciones
 // ========================
 function mostrarMed() {
-  const ids = ['monm1','monm2','monm3','monlblt','moffm1','moffm2','moffm3','mofflblt','btncalcr','btnImprimir'];
+  const ids = ['monm1','monlblt','moffm1','mofflblt','btncalcr','btnImprimir','lblpenalizaciones','row_kt','row_ki','row_kbf'];
   ids.forEach(id => document.getElementById(id).style.display = "");
 }
 
@@ -617,42 +654,28 @@ function calcularRuido() {
   document.getElementById("lblle").innerText = "";
 
   const m1on = parseFloat(document.getElementById("m1on").value);
-  const m2on = parseFloat(document.getElementById("m2on").value);
-  const m3on = parseFloat(document.getElementById("m3on").value);
 
   // Si antes quedó guardado un LMP mayor (por LF+7), preservarlo
   lmp = (lmpb && lmpb > lmp) ? lmpb : lmp;
 
   // Validaciones ON
-  if (isNaN(m1on) || m1on <= 0 || isNaN(m2on) || m2on <= 0 || isNaN(m3on) || m3on <= 0) {
-    document.getElementById("resultadolmon").innerText = "Por favor, ingrese valores mayores a 0 en las cajas de texto.";
+  if (isNaN(m1on) || m1on <= 0) {
+    document.getElementById("resultadolmon").innerText = "Por favor, ingrese valores mayores a 0 en la caja de texto.";
     return;
   }
-  var maximo = Math.max(m1on, m2on, m3on);
-  var minimo = Math.min(m1on, m2on, m3on);
-  if (maximo - minimo > 3) {
-    document.getElementById("resultadolmon").innerText = "La diferencia entre los extremos de la serie no debe ser mayor a 3db.";
-    return;
-  }
-  var lm = (m1on + m2on + m3on) / 3;
+    
+  var lm = m1on;
   document.getElementById("resultadolmon").innerText = "LM = " + lm.toFixed(1);
 
   // OFF
   const m1off = parseFloat(document.getElementById("m1off").value);
-  const m2off = parseFloat(document.getElementById("m2off").value);
-  const m3off = parseFloat(document.getElementById("m3off").value);
 
-  if (isNaN(m1off) || m1off <= 0 || isNaN(m2off) || m2off <= 0 || isNaN(m3off) || m3off <= 0) {
-    document.getElementById("resultadolmoff").innerText = "Por favor, ingrese valores mayores a 0 en las cajas de texto.";
+  if (isNaN(m1off) || m1off <= 0) {
+    document.getElementById("resultadolmoff").innerText = "Por favor, ingrese valores mayores a 0 en la caja de texto.";
     return;
   }
-  maximo = Math.max(m1off, m2off, m3off);
-  minimo = Math.min(m1off, m2off, m3off);
-  if (maximo - minimo > 3) {
-    document.getElementById("resultadolmoff").innerText = "La diferencia entre los extremos de la serie no debe ser mayor a 3db.";
-    return;
-  }
-  var lf = (m1off + m2off + m3off) / 3;
+
+  var lf = m1off;
   document.getElementById("resultadolmoff").innerText = "LF = " + lf.toFixed(1);
 
   // Diferencia LM - LF
@@ -698,27 +721,70 @@ function calcularRuido() {
     document.getElementById('lmplblm7d').textContent = "LMP aplicable:";
     document.getElementById('lmplblm7v').textContent = lmp.toFixed(1) + " db";
   }
-
-  // Evaluación LE
+  // ========================
+  // Evaluación LE y Penalizaciones (K)
+  // ========================
   if (lmlf < 3) {
-    document.getElementById("calculoruido").innerText = "Ruidos No Evaluables por producirse Enmascaramiento";
+    document.getElementById("calculoruido").innerText = "Ruidos no evaluables por producirse enmascaramiento.";
+    document.getElementById("lblle").innerText = "";
     return;
   }
+ 
+  let lm_corregido = 0;
+
   if (lmlf >= 3 && lmlf < 10) {
-    var delta = obtenerDelta(lmlf.toFixed(1));
-    le = lm - parseFloat(delta);
-    document.getElementById("lblle").innerText = "LE = " + le.toFixed(1) + " (LM = " + lm.toFixed(1) + " - Delta = " + delta + " )";
+    // Cálculo logarítmico exacto
+    let termM = Math.pow(10, lm / 10);
+    let termF = Math.pow(10, lf / 10);
+    lm_corregido = 10 * Math.log10(termM - termF);
+  } else if (lmlf >= 10) {
+    lm_corregido = lm;
   }
-  if (lmlf >= 10) {
-    le = lm;
-    document.getElementById("lblle").innerText = "LE = " + le.toFixed(1) + " (LM = " + lm.toFixed(1) + " )";
+
+  // Leer penalizaciones de la UI
+  let kt = parseInt(document.getElementById("k_tonal").value) || 0;
+  let ki = parseInt(document.getElementById("k_impulsivo").value) || 0;
+  let kbf = parseInt(document.getElementById("k_bajafrec").value) || 0;
+
+  // Cálculo de K según Tabla 1 (IRAM 4062-2)
+  let sumaK = kt + ki + kbf;
+  let k_final = 0;
+  let autoMolesto = false;
+
+  switch (sumaK) {
+    case 0:  k_final = 0; break;
+    case 5:  k_final = 5; break;
+    case 7:  k_final = 6; break;
+    case 10: k_final = 6; break;
+    case 12: k_final = 7; break;
+    case 15:
+    case 17: autoMolesto = true; break;
   }
+
+  // Si la suma es 15 o 17, el ruido es automáticamente molesto, independientemente del Límite.
+  if (autoMolesto) {
+    document.getElementById("lblle").innerText = "Suma de componentes = " + sumaK + ".";
+    document.getElementById("calculoruido").innerText = "MOLESTO: Por normativa, la combinación de penalizaciones clasifica al ruido como molesto directamente.";
+    document.getElementById("calculoruido").style.color = "red";
+    return; // Frenamos la ejecución acá
+  }
+
+  // Nivel de Evaluación (LE = LM_corregido + K)
+  let le_sin_redondear = lm_corregido + k_final;
+ 
+  // Redondeo final exigido por norma antes de comparar
+  le = Math.round(le_sin_redondear);
+
+  // Textos para la interfaz
+  document.getElementById("lblle").innerText = "LE = " + le + " dB (LM Corregido: " + lm_corregido.toFixed(1) + " + K: " + k_final + ")";
 
   if (le > 0) {
     if (le > lmpAplicable) {
-      document.getElementById("calculoruido").innerText = "EL LE (" + le.toFixed(1) + ") SUPERA EL LIMITE MAXIMO PERMITIDO (" + lmpAplicable.toFixed(1) + " db)";
+      document.getElementById("calculoruido").innerText = "MOLESTO: EL LE (" + le + " dB) SUPERA EL LÍMITE PERMITIDO (" + lmpAplicable.toFixed(1) + " dB)";
+      document.getElementById("calculoruido").style.color = "red";
     } else {
-      document.getElementById("calculoruido").innerText = "EL LE (" + le.toFixed(1) + ")  NO SUPERA EL LIMITE MAXIMO PERMITIDO (" + lmpAplicable.toFixed(1) + " db)";
+      document.getElementById("calculoruido").innerText = "NO MOLESTO: EL LE (" + le + " dB) NO SUPERA EL LÍMITE PERMITIDO (" + lmpAplicable.toFixed(1) + " dB)";
+      document.getElementById("calculoruido").style.color = "green";
     }
   }
 }
