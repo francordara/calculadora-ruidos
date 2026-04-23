@@ -18,7 +18,7 @@
 
 <body>
 	
-<button onclick="window.location.reload()" type="button" class="btn btn-lg btn-info">Actualizar</button>
+<button onclick="window.location.replace(window.location.pathname + '?reset=' + Date.now())" type="button" class="btn btn-lg btn-info">Actualizar</button>
 
 <div id="makepdf">
 
@@ -347,7 +347,7 @@ $('#calcularRuido').on('click', function(){
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
                 html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'c3', orientation: 'portrait' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).from(nodoParaPdf).save();
             
         });
