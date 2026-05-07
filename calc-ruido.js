@@ -80,12 +80,13 @@ function validarPaso1() {
   const [y, m, d] = fval.split('-').map(Number);
   fecha = new Date(y, m - 1, d);
   const timeValue = document.getElementById('horario').value;
+  const modSonometro = document.getElementById('decibelimetro').value;
   hora = parseInt(timeValue.split(':')[0], 10);
   zona = document.getElementById("zona").value;
   ambiente = document.getElementById("ambiente").value;
 
-  if (isNaN(fecha.getTime()) || isNaN(hora) || zona == 0 || ambiente == 0) {
-    alert("Los campos Fecha, Horario, Zona y Ambiente son obligatorios.");
+  if (isNaN(fecha.getTime()) || isNaN(hora) || zona == 0 || ambiente == 0 || modSonometro == 0) {
+    alert("Los campos Decibelímetro, Fecha, Horario, Zona y Ambiente son obligatorios.");
     return;
   }
 
