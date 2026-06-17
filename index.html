@@ -279,7 +279,20 @@ $('#calcularRuido').on('click', function(){
         var makepdf = document.getElementById("makepdf");
 
         function prepararNodoParaPdf(origen) {
+            var valoresSelect = {};
+            origen.querySelectorAll('select').forEach(function(sel) {
+                if (sel.id) valoresSelect[sel.id] = sel.selectedIndex;
+            });
+
             var clon = origen.cloneNode(true);
+
+            // Restaurar selectedIndex en el clon
+            clon.querySelectorAll('select').forEach(function(sel) {
+                if (sel.id && valoresSelect[sel.id] !== undefined) {
+                    sel.selectedIndex = valoresSelect[sel.id];
+                }
+            });
+            
             var controles = clon.querySelectorAll('input, select, textarea');
 
             controles.forEach(function(control) {
