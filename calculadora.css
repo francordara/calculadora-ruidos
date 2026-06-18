@@ -44,3 +44,30 @@ td {
     text-align: left;
     border: 1px solid #ddd;
 }
+
+#lbllmlf,
+#lblle {
+    font-size: 25px;
+    font-weight: bold;
+    display: block;
+    margin: 6px 0;
+}
+
+
+#monm1 td label, #monm2 td label, #monm3 td label,
+#moffm1 td label, #moffm2 td label, #moffm3 td label {
+    font-size: 25px;
+}
+
+
+#monlblt td label,
+#mofflblt td label,
+#resultadolmon,
+#resultadolmoff {
+    font-size: 25px;
+}
+
+
+#periodolbl {
+    font-size: 25px;
+}

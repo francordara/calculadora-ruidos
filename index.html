@@ -58,6 +58,7 @@
 
             </td>
             <td>
+
                 <label id="periodolbl"></label>
             </td>
         </tr>
@@ -146,15 +147,18 @@
 
         <tr style="display: none; background-color:#ccc ; font-weight: bold;" id="monlblt">
             <td><label>FUENTE ON</label></td>
+
             <td><label id="resultadolmon"></label>
             </td>
         </tr>
         <tr style="display: none" id="monm1">
             <td><label>Med On</label></td>
+
             <td><input type="number" name="m1on" id="m1on" step="0.01"></td>
         </tr>
         <tr style="display: none; background-color:#ccc ; font-weight: bold;" id="mofflblt">
             <td><label>FUENTE OFF</label></td>
+
             <td><label id="resultadolmoff"></label></td>
         </tr>
         <tr style="display: none" id="moffm1">
@@ -212,11 +216,13 @@
 	    
         <tr>
             <td colspan="2">
+
                 <label id="lbllmlf"></label>
             </td>
         </tr>
         <tr>
             <td colspan="2">
+
                 <label id="lblle"></label>
             </td>
         </tr>
@@ -302,38 +308,37 @@ $('#calcularRuido').on('click', function(){
                 if (sel.id) valoresSelect[sel.id] = sel.selectedIndex;
             });
 
+            var valoresInput = {};
+            origen.querySelectorAll('input').forEach(function(inp) {
+                if (inp.id) valoresInput[inp.id] = inp.value;
+            });
+
             var clon = origen.cloneNode(true);
 
-            // Restaurar selectedIndex en el clon
             clon.querySelectorAll('select').forEach(function(sel) {
                 if (sel.id && valoresSelect[sel.id] !== undefined) {
                     sel.selectedIndex = valoresSelect[sel.id];
                 }
             });
-            
-            var controles = clon.querySelectorAll('input, select, textarea');
 
-            controles.forEach(function(control) {
-                var texto = "";
-
-                if (control.tagName === "SELECT") {
-                    texto = control.options[control.selectedIndex] ? control.options[control.selectedIndex].text : "";
-                } else {
-                    texto = control.value || "";
-                }
+            clon.querySelectorAll('select').forEach(function(control) {
+                var texto = control.options[control.selectedIndex] 
+                    ? control.options[control.selectedIndex].text 
+                    : "";
 
                 var reemplazo = document.createElement("span");
                 reemplazo.textContent = texto;
-                reemplazo.style.display = "inline-block";
-                reemplazo.style.width = "100%";
-                reemplazo.style.minHeight = "1.2em";
-                reemplazo.style.padding = "12px";
-                reemplazo.style.border = "2px solid #ecf0f1";
-                reemplazo.style.borderRadius = "6px";
-                reemplazo.style.backgroundColor = "#f8f9fa";
-                reemplazo.style.boxSizing = "border-box";
-                reemplazo.style.color = "#2c3e50";
+                reemplazo.style.cssText = "display:inline-block; width:100%; min-height:1.2em; padding:12px; border:2px solid #ecf0f1; border-radius:6px; background-color:#f8f9fa; box-sizing:border-box; color:#2c3e50;";
+                control.parentNode.replaceChild(reemplazo, control);
+            });
 
+            clon.querySelectorAll('input').forEach(function(control) {
+                var id = control.id;
+                var texto = (id && valoresInput[id] !== undefined) ? valoresInput[id] : control.value || "";
+
+                var reemplazo = document.createElement("span");
+                reemplazo.textContent = texto;
+                reemplazo.style.cssText = "display:inline-block; width:100%; min-height:1.2em; padding:12px; border:2px solid #ecf0f1; border-radius:6px; background-color:#f8f9fa; box-sizing:border-box; color:#2c3e50;";
                 control.parentNode.replaceChild(reemplazo, control);
             });
 
@@ -346,7 +351,7 @@ $('#calcularRuido').on('click', function(){
             html2pdf().set({
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
-                html2canvas: { scale: 2, useCORS: true },
+                html2canvas: { scale: 3, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).from(nodoParaPdf).save();
             
