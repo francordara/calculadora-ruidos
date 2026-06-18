@@ -302,30 +302,33 @@ $('#calcularRuido').on('click', function(){
         var button = document.getElementById("botonPDF");
         var makepdf = document.getElementById("makepdf");
 
-        function prepararNodoParaPdf(origen) {
+        button.addEventListener("click", function () {
+
+            document.querySelectorAll('select').forEach(function(sel) {
+                var instancia = M.FormSelect.getInstance(sel);
+                if (instancia) instancia.destroy();
+            });
+
             var valoresSelect = {};
-            origen.querySelectorAll('select').forEach(function(sel) {
+            document.querySelectorAll('select').forEach(function(sel) {
                 if (sel.id) valoresSelect[sel.id] = sel.selectedIndex;
             });
 
             var valoresInput = {};
-            origen.querySelectorAll('input').forEach(function(inp) {
+            document.querySelectorAll('input').forEach(function(inp) {
                 if (inp.id) valoresInput[inp.id] = inp.value;
             });
 
-            var clon = origen.cloneNode(true);
-
-            clon.querySelectorAll('select').forEach(function(sel) {
-                if (sel.id && valoresSelect[sel.id] !== undefined) {
-                    sel.selectedIndex = valoresSelect[sel.id];
-                }
-            });
+            var clon = makepdf.cloneNode(true);
 
             clon.querySelectorAll('select').forEach(function(control) {
-                var texto = control.options[control.selectedIndex] 
-                    ? control.options[control.selectedIndex].text 
+                var id = control.id;
+                if (id && valoresSelect[id] !== undefined) {
+                    control.selectedIndex = valoresSelect[id];
+                }
+                var texto = control.options[control.selectedIndex]
+                    ? control.options[control.selectedIndex].text
                     : "";
-
                 var reemplazo = document.createElement("span");
                 reemplazo.textContent = texto;
                 reemplazo.style.cssText = "display:inline-block; width:100%; min-height:1.2em; padding:12px; border:2px solid #ecf0f1; border-radius:6px; background-color:#f8f9fa; box-sizing:border-box; color:#2c3e50;";
@@ -335,26 +338,23 @@ $('#calcularRuido').on('click', function(){
             clon.querySelectorAll('input').forEach(function(control) {
                 var id = control.id;
                 var texto = (id && valoresInput[id] !== undefined) ? valoresInput[id] : control.value || "";
-
                 var reemplazo = document.createElement("span");
                 reemplazo.textContent = texto;
                 reemplazo.style.cssText = "display:inline-block; width:100%; min-height:1.2em; padding:12px; border:2px solid #ecf0f1; border-radius:6px; background-color:#f8f9fa; box-sizing:border-box; color:#2c3e50;";
                 control.parentNode.replaceChild(reemplazo, control);
             });
 
-            return clon;
-        }
-  
-        button.addEventListener("click", function () {
-            var nodoParaPdf = prepararNodoParaPdf(makepdf);
 
             html2pdf().set({
                 margin: 8,
                 filename: 'resultado-ruido.pdf',
                 html2canvas: { scale: 3, useCORS: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).from(nodoParaPdf).save();
-            
+            }).from(clon).save().then(function() {
+                document.querySelectorAll('select').forEach(function(sel) {
+                    M.FormSelect.init(sel);
+                });
+            });
         });
 
 </script>
